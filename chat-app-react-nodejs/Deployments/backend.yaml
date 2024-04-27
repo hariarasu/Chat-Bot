@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-deployment
+  labels:
+    app: chat
+spec:
+  selector:
+    matchLabels:
+      app: chat
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: chat
+    spec:
+      containers:
+      - name: hello
+        image: chat:latest
+        imagePullPolicy: Never
+        ports:
+        - name: http
+          containerPort: 3000 
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: chat-service
+spec:
+  selector:
+    app: chat
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 3000 		
+    targetPort: 3000
